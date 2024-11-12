@@ -1,4 +1,3 @@
-import json
 import numpy as np
 import torch
 import random
@@ -19,18 +18,6 @@ def setSeed():
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
-
-MODEL_NAME='gru'
-EMBEDDING_DIM = 300
-HIDDEN_DIM = 256
-BATCH_SIZE = 64
-LEARNING_RATE = 0.001
-NUM_EPOCHS = 80
-DROPOUT = 0.3
-NUM_LAYERS=5
-BIDIRECTIONAL=True
-EMBEDDING = "self"
-OPTIMIZER='adam'
 
 def selectModel(name, train_dataset, embedding_matrix=None):
     if name == "lstm":
@@ -207,9 +194,12 @@ def main():
                         help="Path to the training data CSV file")
     parser.add_argument("test_file", type=str, default='data/hw2_test.csv', nargs='?',
                         help="Path to the test data CSV file")
+    parser.add_argument("output_file", type=str, default='result/result.csv', nargs='?',
+                        help="Path to the output CSV file")
     args = parser.parse_args()
     train_file = args.train_file
     test_file = args.test_file
+    output_file = args.output_file
     train_dataset, val_dataset = createTagSets(train_file)
     embedding_matrix, dimension = selectEmbedding(train_dataset.token_vocab, EMBEDDING)
     
@@ -241,10 +231,21 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_fn)
     all_predictions = eval(model, test_loader, device, train_dataset)
     dt_string = makeStats(stats)
-    writePrediction(utterances, all_predictions, dt_string)
+    writePrediction(utterances, all_predictions, dt_string, output_file)
 
 
 if __name__ == "__main__":
+    MODEL_NAME='gru'
+    EMBEDDING_DIM = 300
+    HIDDEN_DIM = 256
+    BATCH_SIZE = 64
+    LEARNING_RATE = 0.001
+    NUM_EPOCHS = 5
+    DROPOUT = 0.3
+    NUM_LAYERS=5
+    BIDIRECTIONAL=True
+    EMBEDDING = "self"
+    OPTIMIZER='adam'
     # import itertools
     # embedding_dim_list = [100, 300]
     # hidden_dim_list = [128]

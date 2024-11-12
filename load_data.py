@@ -27,7 +27,6 @@ def splitData(X, y, split):
         X, y, test_size=split, random_state=42)
     return x_train, x_test, y_train, y_test
 
-# create training datasets
 def createTagSets(filepath, split=0.2):
     utterances, tags = processData(filepath)
     x_train, x_val, y_train, y_val = splitData(utterances, tags, split)
@@ -44,24 +43,20 @@ def createGridSearchSets(filepath, split=0.005):
     valData = constructDataset(x_val, y_val)
     return trainData, valData
 
-# create testing datasets
 def createTestData(filepath, train_dataset):
     utterances, tags = processData(filepath)
     testData = constructDataset(utterances)
     test_dataset = POSDataset(testData, token_vocab=train_dataset.token_vocab, tag_vocab=train_dataset.tag_vocab, training=False)
     return test_dataset, utterances
 
-# define dataset
 class POSDataset(Dataset):
     def __init__(self, data, token_vocab=None, tag_vocab=None, training=True):
 
-        # Create vocabularies if training
         if training:
             self.token_vocab = {'<PAD>': 0, '<UNK>': 1}
             self.tag_vocab = {'<PAD>': 0}
             self.all_tags = []
 
-            # build vocab from training data
             for item in data:
                 for token in item['sentence']:
                     if token not in self.token_vocab:
@@ -75,7 +70,6 @@ class POSDataset(Dataset):
             self.token_vocab = token_vocab
             self.tag_vocab = tag_vocab
 
-        # Convert sentences and tags to integer IDs during initialization
         self.corpus_token_ids = []
         self.corpus_tag_ids = []
         for item in data:
