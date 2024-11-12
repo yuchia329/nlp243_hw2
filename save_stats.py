@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def write_stats(name, datetime, stats, data):
-    filename = 'stats_partial.csv'
+    filename = 'stats.csv'
     train_mean = statistics.mean([float(i) for i in stats["train_loss"]])
     val_mean = statistics.mean([float(i) for i in stats["val_loss"]])
     f1_mean = statistics.mean([float(i) for i in stats["f1"]])
