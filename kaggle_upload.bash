@@ -1,0 +1,1 @@
+kaggle competitions submit -c nlp-243-fall-24-hw-2-slot-tagging-of-utterances -f $1 -m "$2"
