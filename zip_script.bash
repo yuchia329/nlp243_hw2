@@ -1,0 +1,1 @@
+zip -r nlp243_hw2.zip * -x ".DS_Store/*" -x "**__pycache__/*" -x "data/*" -x "stats*" -x "graph/*" -x estimate.py -x experiment_rnn_svm.py -x grid_search.py
